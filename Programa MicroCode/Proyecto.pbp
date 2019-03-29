@@ -1,0 +1,121 @@
+'****************************************************************
+'*  Name    : UNTITLED.BAS                                      *
+'*  Author  : [select VIEW...EDITOR OPTIONS]                    *
+'*  Notice  : Copyright (c) 2017 [select VIEW...EDITOR OPTIONS] *
+'*          : All Rights Reserved                               *
+'*  Date    : 18/1/2017                                         *
+'*  Version : 1.0                                               *
+'*  Notes   :                                                   *
+'*          :                                                   *
+'****************************************************************
+INCLUDE "modedefs.bas" ;incluyen los modos de comunicación
+
+x var byte   ;variable de almacenamiento
+y VAR BYTE   ;variable de almacenamiento
+texto VAR BYTE  ;variable de almacenamiento
+dat VAR BYTE  ;variable de almacenamiento
+LCDOUT $fe,1, " PROYECTO FINAL " ;texto para verificar la conexión LCD
+LCDOUT $FE, $C0, "INTERFACES - UTE" ;
+PAUSE 4000 ;espera 4 seg.
+LCDOUT $fe,1 ;limpia pantalla del Lcd 
+
+Inicio:
+
+ SERIN portb.1 ,N1200, dat ;esperar el dato y guardarlo en dat
+ LCDOUT, dat ;desplegar el dat en LCD
+ 
+ ; RUTINA PRENDE Y APAGA LED AZUL
+ 
+ If dat = "A" then
+ 
+    LCDOUT $fe,1 
+    high portb.2
+    LCDOUT $fe,1, "   ENCENDIDO   " 
+    LCDOUT $FE, $C0, "    LED AZUL    "
+    
+ endif
+ 
+ If dat = "B" then
+ 
+    LCDOUT $fe,1 
+    low portb.2
+    LCDOUT $fe,1, "    APAGADO    " 
+    LCDOUT $FE, $C0, "   LED AZUL   "
+    
+ endif
+ 
+ ; RUTINA PRENDE Y APAGA LED ROJO
+ 
+  If dat = "C" then
+ 
+    LCDOUT $fe,1 
+    high portb.4
+    LCDOUT $fe,1, "   ENCENDIDO   " 
+    LCDOUT $FE, $C0, "    LED ROJO    "
+    
+ endif
+ 
+ If dat = "D" then
+ 
+    LCDOUT $fe,1 
+    LOW portb.4
+    LCDOUT $fe,1, "    APAGADO    " 
+    LCDOUT $FE, $C0, "   LED ROJO   "
+    
+ endif
+ 
+ ; RUTINA PRENDE Y APAGA DOS LEDS
+ 
+   If dat = "E" then
+   
+    LCDOUT $fe,1 
+    
+    FOR  Y=1     TO       20
+        high portb.2
+        PAUSE 300
+        LOW portb.2
+        high portb.4
+        PAUSE 300
+        LOW portb.4
+    NEXT
+    
+    high portb.2
+    high portb.4
+    
+    LCDOUT $fe,1, "   ENCENDIDO   " 
+    LCDOUT $FE, $C0, "LED ROJO Y AZUL"
+    
+ endif
+ 
+ If dat = "F" then
+ 
+    LCDOUT $fe,1 
+    LOW portb.2
+    LOW portb.4
+    LCDOUT $fe,1, "    APAGADO    "
+    LCDOUT $FE, $C0, "LED ROJO Y AZUL"
+    
+ endif
+ 
+; RUTINA ENVIA Y BORRA TEXTO DEL LCD
+ 
+If texto = " " then
+         
+    LCDOUT $fe,1, texto;
+         
+endif
+
+If dat = "H" then
+         
+     LCDOUT $fe,1 
+     high portb.2
+     high portb.4
+     PAUSE 300
+     LOW portb.2
+     LOW portb.4
+     
+endif
+    
+ GOTO inicio 
+ 
+END
